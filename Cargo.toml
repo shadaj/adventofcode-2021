@@ -1,0 +1,13 @@
+[package]
+name = "adventofcode-2021"
+version = "0.1.0"
+authors = ["Shadaj Laddad <shadaj@users.noreply.github.com>"]
+edition = "2021"
+
+[[bin]]
+name = "day1_a"
+path = "src/day1/a.rs"
+
+[[bin]]
+name = "day1_b"
+path = "src/day1/b.rs"
