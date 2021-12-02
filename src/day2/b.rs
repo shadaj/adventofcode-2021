@@ -52,8 +52,8 @@ mod util {
 }
 // END UTIL
 
+use std::io::{stdout, BufWriter, Write};
 use util::*;
-use std::io::{Write, BufWriter, stdout};
 
 fn main() {
     let mut input = Scanner::new();
@@ -71,14 +71,10 @@ fn main() {
                 "forward" => {
                     horizontal += next_change;
                     depth += aim * next_change;
-                },
-                "down" => {
-                    aim += next_change;
-                },
-                "up" => {
-                    aim -= next_change;
-                },
-                _ => panic!()
+                }
+                "down" => aim += next_change,
+                "up" => aim -= next_change,
+                _ => panic!(),
             }
         } else {
             break;
