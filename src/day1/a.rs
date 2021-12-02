@@ -1,4 +1,5 @@
 // BEGIN UTIL (https://codeforces.com/blog/entry/67391)
+#[allow(dead_code)]
 mod util {
     use std::{io::stdin, str::FromStr};
 
