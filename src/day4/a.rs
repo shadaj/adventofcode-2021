@@ -14,14 +14,14 @@ fn main() {
         .next::<String>()
         .unwrap()
         .split(",")
-        .map(|x| x.parse::<i32>().unwrap())
-        .collect::<Vec<_>>();
+        .map(|x| x.parse().unwrap())
+        .collect::<Vec<i32>>();
 
     let boards = input
-        .many::<i32>()
+        .many()
         .collect::<Vec<i32>>()
         .chunks(5 * 5)
-        .map(|c| c.iter().cloned().collect::<Vec<i32>>())
+        .map(|c| c.iter().cloned().collect())
         .collect::<Vec<Vec<i32>>>();
 
     let mut boards_marked = vec![vec![false; 25]; boards.len()];
