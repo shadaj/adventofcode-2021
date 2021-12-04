@@ -1,0 +1,81 @@
+// BEGIN UTIL (https://codeforces.com/blog/entry/67391)
+#[path = "../util.rs"]
+mod util;
+// END UTIL
+
+use std::{
+    collections::HashSet,
+    io::{stdout, BufWriter, Write},
+};
+use util::*;
+
+fn main() {
+    let mut input = Scanner::new();
+    let out = &mut BufWriter::new(stdout());
+
+    let picked_nums = input
+        .next::<String>()
+        .unwrap()
+        .split(",")
+        .map(|x| x.parse::<i32>().unwrap())
+        .collect::<Vec<_>>();
+
+    let boards = input
+        .many::<i32>()
+        .collect::<Vec<i32>>()
+        .chunks(5 * 5)
+        .map(|c| c.iter().cloned().collect::<Vec<i32>>())
+        .collect::<Vec<Vec<i32>>>();
+
+    let mut boards_marked = vec![vec![false; 25]; boards.len()];
+
+    fn board_won(board: &Vec<bool>) -> bool {
+        for column in 0..5 {
+            if (0..5).all(|row| board[row * 5 + column]) {
+                return true;
+            }
+        }
+
+        for row in 0..5 {
+            if (0..5).all(|column| board[row * 5 + column]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    fn update_board(value: i32, board_nums: &Vec<i32>, board: &mut Vec<bool>) {
+        for (i, &num) in board_nums.iter().enumerate() {
+            if num == value {
+                board[i] = true;
+            }
+        }
+    }
+
+    let mut remaining_boards = (0..boards.len()).collect::<HashSet<usize>>();
+
+    for num in picked_nums {
+        for i in 0..boards.len() {
+            update_board(num, &boards[i], &mut boards_marked[i]);
+        }
+
+        for board_i in 0..boards.len() {
+            if remaining_boards.contains(&board_i) {
+                if board_won(&boards_marked[board_i]) {
+                    let unmarked: i32 = boards_marked[board_i]
+                        .iter()
+                        .enumerate()
+                        .map(|(i, &x)| if !x { boards[board_i][i] } else { 0 })
+                        .sum();
+
+                    remaining_boards.remove(&board_i);
+                    if remaining_boards.is_empty() {
+                        writeln!(out, "{}", unmarked * num).unwrap();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
