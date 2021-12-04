@@ -10,7 +10,7 @@ fn main() {
     let mut input = Scanner::new();
     let out = &mut BufWriter::new(stdout());
 
-    let mut all_strs_oxygen = input.many().collect::<Vec<String>>();
+    let mut all_strs_oxygen = input.many(EoF).collect::<Vec<String>>();
     let mut all_strs_co2 = all_strs_oxygen.clone();
 
     for cur_i in 0..all_strs_oxygen[0].len() {

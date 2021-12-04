@@ -10,15 +10,10 @@ fn main() {
     let mut input = Scanner::new();
     let out = &mut BufWriter::new(stdout());
 
-    let picked_nums = input
-        .next::<String>()
-        .unwrap()
-        .split(",")
-        .map(|x| x.parse().unwrap())
-        .collect::<Vec<i32>>();
+    let picked_nums = input.many_by(",", IsWhitespace).collect::<Vec<i32>>();
 
     let boards = input
-        .many()
+        .many(EoF)
         .collect::<Vec<i32>>()
         .chunks(5 * 5)
         .map(|c| c.iter().cloned().collect())

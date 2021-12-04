@@ -15,7 +15,7 @@ fn main() {
     let mut cur_sum = 0;
     let mut count = 0;
 
-    for next in input.many() {
+    for next in input.many(EoF) {
         if window.len() == 3 {
             let front_elem = window.pop_front().unwrap();
             let next_window_sum = cur_sum - front_elem + next;

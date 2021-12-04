@@ -14,7 +14,7 @@ fn main() {
     let mut depth = 0;
 
     loop {
-        if let Some(next_command) = input.next::<String>() {
+        if let Ok(next_command) = input.next::<String>() {
             let next_change: i32 = input.next().unwrap();
 
             match next_command.as_str() {

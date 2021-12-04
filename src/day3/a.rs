@@ -13,7 +13,7 @@ fn main() {
     let mut counts = Vec::new();
     let mut total_count = 0;
 
-    for next in input.many::<String>() {
+    for next in input.many::<String, _>(EoF) {
         if counts.len() == 0 {
             counts = next.chars().map(|_| 0).collect();
         }

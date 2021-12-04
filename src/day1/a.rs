@@ -13,7 +13,7 @@ fn main() {
     let mut prev: Option<u32> = None;
     let mut count = 0;
 
-    for next in input.many() {
+    for next in input.many(EoF) {
         if let Some(prev) = prev {
             if next > prev {
                 count += 1;
