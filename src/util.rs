@@ -88,7 +88,10 @@ impl Scanner {
         }
     }
 
-    pub fn next_by<T: std::str::FromStr, P: NotPattern>(&mut self, delim: &P) -> Result<T, T::Err> {
+    pub fn next_by<T: std::str::FromStr, P: NotPattern>(
+        &mut self,
+        delim: &P,
+    ) -> Result<T, Option<T::Err>> {
         let mut acc_cur_index = self.cur_index;
         loop {
             let cur_slice = &self.buffer[acc_cur_index..];
@@ -105,7 +108,7 @@ impl Scanner {
                         self.cur_index = acc_cur_index;
                     }
 
-                    return parsed;
+                    return parsed.map_err(|e| Some(e));
                 }
             } else {
                 if cur_slice.len() == 0 {
@@ -118,23 +121,27 @@ impl Scanner {
 
                 if additional == 0 {
                     let cur_slice = &self.buffer[acc_cur_index..];
-                    let parsed = cur_slice.parse();
-                    if parsed.is_ok() {
-                        self.buffer = String::new();
-                        self.cur_index = 0;
-                    }
+                    if cur_slice.len() == 0 {
+                        return Err(None); // reached EoF
+                    } else {
+                        let parsed = cur_slice.parse().map_err(|e| Some(e));
+                        if parsed.is_ok() {
+                            self.buffer = String::new();
+                            self.cur_index = 0;
+                        }
 
-                    return parsed;
+                        return parsed;
+                    }
                 }
             }
         }
     }
 
-    pub fn next<T: std::str::FromStr>(&mut self) -> Result<T, T::Err> {
+    pub fn next<T: std::str::FromStr>(&mut self) -> Result<T, Option<T::Err>> {
         self.next_by(&IsWhitespace)
     }
 
-    pub fn next_line<T: std::str::FromStr>(&mut self) -> Result<T, T::Err> {
+    pub fn next_line<T: std::str::FromStr>(&mut self) -> Result<T, Option<T::Err>> {
         self.next_by(&"\n")
     }
 
@@ -143,6 +150,13 @@ impl Scanner {
         stop: P2,
     ) -> ScannerManyIterator<'a, T, IsWhitespace, P2> {
         self.many_by(IsWhitespace, stop)
+    }
+
+    pub fn many_lines<'a, T: std::str::FromStr, P2: NotPattern>(
+        &'a mut self,
+        stop: P2,
+    ) -> ScannerManyIterator<'a, T, &str, P2> {
+        self.many_by(&"\n", stop)
     }
 
     pub fn many_by<'a, T: std::str::FromStr, P: NotPattern, P2: NotPattern>(
