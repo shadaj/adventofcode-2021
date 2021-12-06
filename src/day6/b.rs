@@ -3,7 +3,10 @@
 mod util;
 // END UTIL
 
-use std::{collections::HashMap, io::{stdout, BufWriter, Write}};
+use std::{
+    collections::HashMap,
+    io::{stdout, BufWriter, Write},
+};
 use util::*;
 
 fn main() {
@@ -26,9 +29,9 @@ fn main() {
             } else {
                 *new_map.entry(day - 1).or_insert(0) += count;
             }
-        };
+        }
         fish_map = new_map;
-        
+
         *fish_map.entry(8).or_insert(0) += new_fish_count;
     }
 
