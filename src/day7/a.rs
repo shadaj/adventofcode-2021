@@ -13,7 +13,6 @@ fn main() {
     let mut crab_locations = input.many_by(",", EoF).collect::<Vec<usize>>();
     crab_locations.sort();
     let crab_count = crab_locations.len();
-    dbg!(&crab_locations);
 
     let mut cur_fuel: usize = crab_locations.iter().sum();
     let mut min_fuel = cur_fuel;
