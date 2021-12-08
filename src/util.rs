@@ -124,8 +124,9 @@ impl Scanner {
                     if cur_slice.len() == 0 {
                         return Err(None); // reached EoF
                     } else {
-                        let parsed =
-                            cur_slice.parse().map_err(|e| Some(e))
+                        let parsed = cur_slice
+                            .parse()
+                            .map_err(|e| Some(e))
                             .or(cur_slice.trim().parse().map_err(|e| Some(e)));
 
                         if parsed.is_ok() {
